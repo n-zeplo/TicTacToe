@@ -16,6 +16,6 @@ public class Game {
 
     public void start() {
         printStream.println(board);
-        printStream.println("Player 1");
+        printStream.println("Player 1: Enter a Number 1 to 9 Where You Want to Move");
     }
 }

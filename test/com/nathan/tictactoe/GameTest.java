@@ -41,4 +41,11 @@ public class GameTest {
 
         verify(printStream).println(contains("Player 1"));
     }
+
+    @Test
+    public void shouldDisplayPromptToPlayerOneWithInstructions() {
+        game.start();
+
+        verify(printStream).println(contains("1 to 9"));
+    }
 }

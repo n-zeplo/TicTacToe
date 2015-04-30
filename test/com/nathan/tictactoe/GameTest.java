@@ -38,7 +38,9 @@ public class GameTest {
 
     @Test
     public void shouldStartingGameDrawsTheBoard() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
 
         game.start();
 
@@ -47,15 +49,21 @@ public class GameTest {
 
     @Test
     public void shouldDisplayPromptToPlayerOneToMove() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
+
         game.start();
 
-        verify(printStream).println(contains("Player 1"));
+        verify(printStream, atLeastOnce()).println(contains("Player 1"));
     }
 
     @Test
     public void shouldDisplayPromptToPlayerOneWithInstructions() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
+
         game.start();
 
         verify(printStream, atLeast(1)).println(contains("1 to 9"));
@@ -63,7 +71,9 @@ public class GameTest {
 
     @Test
     public void shouldMovePlayerOneOnBoardWithValidInput() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
 
         game.start();
 
@@ -72,7 +82,9 @@ public class GameTest {
 
     @Test
     public void shouldCheckIfInputIsAlreadyTakenOnBoard() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "1", "2");
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
 
         game.start();
 
@@ -82,14 +94,19 @@ public class GameTest {
     @Test
      public void shouldDisplayPromptToPlayerTwo() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
+
         game.start();
 
-        verify(printStream).println(contains("Player 2"));
+        verify(printStream, atLeastOnce()).println(contains("Player 2"));
     }
 
     @Test
     public void shouldDisplayPromptToPlayerTwoWithSameInstructionsAsPlayerOneOnMove() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("");
+        when(board.isFull()).thenReturn(false);
+        when(board.checkWinningCombinations()).thenReturn(true);
 
         game.start();
 
@@ -99,15 +116,28 @@ public class GameTest {
     @Test
     public void shouldInformUserIfCellIsAlreadyTaken() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1", "2");
-        when(board.isCellTaken(anyString())).thenReturn(true);
+        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isCellTaken(anyString())).thenReturn(true, false);
+
         game.start();
 
         verify(printStream, atLeastOnce()).println(contains("Location already taken"));
     }
 
     @Test
+    public void shouldAllowUserToReChooseIfSelectionIsTaken() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("");
+        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isCellTaken(anyString())).thenReturn(true, false);
+
+        game.start();
+
+        verify(printStream, atLeast(2)).println(contains("Player 2"));
+    }
+
+    @Test
     public void shouldTakeUserInputUntilBoardIsFullThenReturnDrawMessage() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(bufferedReader.readLine()).thenReturn("1", "2","3","4","5","6","7","8","9");
         when(board.isFull()).thenReturn(true);
 
         game.start();

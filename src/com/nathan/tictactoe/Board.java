@@ -8,12 +8,11 @@ import static java.lang.Integer.parseInt;
  * Created by nzeplowi on 4/30/15.
  */
 public class Board {
-    public String[] gameBoard;
+    private String[] gameBoard;
     private final int[][] WINNING_COMBINATIONS= {{0,1,2},{3,4,5}, {6,7,8}, {0,3,6}, {1,4,7}, {2,5,8},{0,4,8},{2,4,6}};
     
-    public Board() {
-        this.gameBoard = new String[9];
-        Arrays.fill(gameBoard, " ");
+    public Board(String[] board) {
+        this.gameBoard = board;
     }
 
     public boolean isCellTaken(String input){
@@ -41,11 +40,7 @@ public class Board {
     }
 
     private boolean winnerExistsInCombination(int[] positions) {
-        if (!gameBoard[positions[0]].equals(" ") && gameBoard[positions[0]].equals(gameBoard[positions[1]]) && gameBoard[positions[1]].equals(gameBoard[positions[2]])) {
-            return true;
-        } else {
-            return false;
-        }
+        return !gameBoard[positions[0]].equals(" ") && gameBoard[positions[0]].equals(gameBoard[positions[1]]) && gameBoard[positions[1]].equals(gameBoard[positions[2]]);
     }
 
     @Override

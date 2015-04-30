@@ -14,13 +14,18 @@ import static org.mockito.Mockito.verify;
 public class BoardTest {
 
     private Board board;
+    private String[] blankBoard;
 
     @Before
     public void setUp() throws Exception {
-        board = new Board();
+        blankBoard = new String[] {" ", " ", " ", " ", " ", " ", " ", " ", " "};
+
     }
+
     @Test
     public void shouldReturnFormattedBoard() {
+        board = new Board(blankBoard);
+
         board.toString();
 
         assertEquals(board.toString(), "   |   |   \n-----------\n   |   |   \n-----------\n   |   |   ");
@@ -28,6 +33,8 @@ public class BoardTest {
 
     @Test
     public void shouldAddXToSlotOneWithInputOne() {
+        board = new Board(blankBoard);
+
         board.putPlayerOnTheBoard("X", "1");
 
         assertEquals(board.toString(),  " X |   |   \n-----------\n   |   |   \n-----------\n   |   |   ");
@@ -35,6 +42,8 @@ public class BoardTest {
 
     @Test
     public void shouldAddXToSlotFourWithInputFour() {
+        board = new Board(blankBoard);
+
         board.putPlayerOnTheBoard("X", "4");
 
         assertEquals(board.toString(),  "   |   |   \n-----------\n X |   |   \n-----------\n   |   |   ");
@@ -42,6 +51,8 @@ public class BoardTest {
 
     @Test
     public void shouldAddOToSlotOneWithInputOne() {
+        board = new Board(blankBoard);
+
         board.putPlayerOnTheBoard("O", "1");
 
         assertEquals(board.toString(),  " O |   |   \n-----------\n   |   |   \n-----------\n   |   |   ");
@@ -49,44 +60,49 @@ public class BoardTest {
 
     @Test
     public void shouldReturnFalseIfSlotIsEmpty() {
+        board = new Board(blankBoard);
+
         assertEquals(board.isCellTaken("1"), false);
     }
 
     @Test
     public void shouldReturnTrueIfSlotIsFilled() {
+        board = new Board(blankBoard);
         board.putPlayerOnTheBoard("O", "1");
 
         assertEquals(board.isCellTaken("1"), true);
     }
 
     @Test
-    public void shouldReturnFalseIfBoardIsFull() {
-        assertEquals(board.isFull(), false);
+    public void shouldReturnFalseIfBoardIsNotFull() {
+        board = new Board(blankBoard);
+
+        assertEquals(false, board.isFull());
     }
 
     @Test
     public void shouldReturnTrueIfBoardIsFull() {
-        String[] fullBoard = new String[9];
+        String[] fullBoard = new String[] {"X", "X", "X", "X","X","X","X","X","X"};
         Arrays.fill(fullBoard, "1");
-        board.gameBoard = fullBoard;
+        board = new Board(fullBoard);
 
-        assertEquals(board.isFull(), true);
+        assertEquals(true, board.isFull());
     }
 
     @Test
     public void shouldReturnTrueIfWinnerExistsInWinningCombinations() {
         String[] winningBoard = new String[] {"X", "O", "X", "","X","","","","X"};
 
-        board.gameBoard = winningBoard;
+        board = new Board(winningBoard);
 
         assertEquals(true, board.checkWinningCombinations());
     }
 
     @Test
     public void shouldReturnFalseIfWinnerDoesNotExistsInWinningCombinations() {
-        String[] winningBoard = new String[] {"X", "O", "X", "","O","","","","X"};
+        String[] losingBoard = new String[] {"X", "O", "X", "","O","","","","X"};
 
-        board.gameBoard = winningBoard;
+        board = new Board(losingBoard);
 
         assertEquals(false, board.checkWinningCombinations());
     }

@@ -23,37 +23,48 @@ public class Game {
     }
 
     public void start() {
-        boolean done = false;
         printStream.println(board.toString());
+        gameLoop();
+    }
 
+    private void gameLoop() {
+        //NEEDS MAJOR REFACTORING
+        boolean done = false;
         while (!done) {
             for (Player player : players) {
-                if(!board.isFull()){
-                    getPlayersMove(player);
-//                    if(board.checkWinningCombinations()){
-//                        printStream.println(player.name + " Wins!");
-//                    }
-                } else {
+                if(board.isFull()) {
                     printStream.println("Game is a draw");
                     done = true;
+                }else {
+                    movePlayer(player);
+
+                    if(board.checkWinningCombinations()){
+                        done = true;
+                        printStream.println(player.name + " Wins!");
+                    }
                 }
             }
         }
     }
 
-    private void getPlayersMove(Player player) {
+    private void movePlayer(Player player) {
         printStream.println(player.name + ": Please Enter A Number From 1 to 9 Where You Want to Move");
         String input = returnUserInput();
-        if(input.matches("^[1-9]")) {
-            movePlayer(player, input);
-        }
+        if(checkIfUserInputIsValid(input)){
+            sendMoveToBoard(player, input);
+        };
     }
 
-    private void movePlayer(Player player, String input) {
+    private boolean checkIfUserInputIsValid(String input) {
+        return input.matches("^[1-9]");
+    }
+
+    private void sendMoveToBoard(Player player, String input) {
         if(!board.isCellTaken(input)) {
             printStream.println(board.putPlayerOnTheBoard(player.piece, input));
         } else {
             printStream.println("Location already taken");
+            movePlayer(player);
         }
     }
 

@@ -93,4 +93,21 @@ public class BoardTest {
         assertEquals(false, board.winnerExists(positions));
     }
 
+    @Test
+    public void shouldReturnTrueIfWinnerExistsInWinningCombinations() {
+        String[] winningBoard = new String[] {"X", "O", "X", "","X","","","","X"};
+
+        board.gameBoard = winningBoard;
+
+        assertEquals(true, board.checkWinningCombinations());
+    }
+
+    @Test
+    public void shouldReturnFalseIfWinnerDoesNotExistsInWinningCombinations() {
+        String[] winningBoard = new String[] {"X", "O", "X", "","O","","","","X"};
+
+        board.gameBoard = winningBoard;
+
+        assertEquals(false, board.checkWinningCombinations());
+    }
 }

@@ -16,12 +16,6 @@ public class Board {
         Arrays.fill(gameBoard, " ");
     }
 
-    @Override
-    public String toString() {
-        return " " + gameBoard[0] + " | " + gameBoard[1] + " | " + gameBoard[2] + " \n" +
-                "-----------\n" + " " + gameBoard[3] + " | " + gameBoard[4] + " | " + gameBoard[5] + " \n" +
-                "-----------\n" + " " + gameBoard[6] + " | " + gameBoard[7] + " | " + gameBoard[8] + " ";
-    }
     public boolean isCellTaken(String input){
         return !gameBoard[parseInt(input) - 1].equals(" ");
     }
@@ -34,11 +28,30 @@ public class Board {
         return !Arrays.asList(gameBoard).contains(" ");
     }
 
+    public boolean checkWinningCombinations(){
+        boolean isWinner = false;
+
+        for (int[] ints : WINNING_COMBINATIONS) {
+            if(winnerExists(ints)){
+                isWinner = true;
+            }
+        }
+
+        return isWinner;
+    }
+
     public boolean winnerExists(int[] positions) {
         if (!gameBoard[positions[0]].equals(" ") && gameBoard[positions[0]].equals(gameBoard[positions[1]]) && gameBoard[positions[1]].equals(gameBoard[positions[2]])) {
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return " " + gameBoard[0] + " | " + gameBoard[1] + " | " + gameBoard[2] + " \n" +
+                "-----------\n" + " " + gameBoard[3] + " | " + gameBoard[4] + " | " + gameBoard[5] + " \n" +
+                "-----------\n" + " " + gameBoard[6] + " | " + gameBoard[7] + " | " + gameBoard[8] + " ";
     }
 }

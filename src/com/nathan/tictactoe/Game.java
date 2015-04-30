@@ -3,8 +3,6 @@ package com.nathan.tictactoe;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import static java.lang.Integer.parseInt;
 
@@ -14,44 +12,31 @@ import static java.lang.Integer.parseInt;
 public class Game {
     private PrintStream printStream;
     private BufferedReader bufferedReader;
-    private String[] board;
+    private Player[] players;
+    private Board board;
 
-    public Game(PrintStream printStream, BufferedReader bufferedReader) {
+    public Game(PrintStream printStream, BufferedReader bufferedReader, Player[] players, Board board) {
         this.printStream = printStream;
         this.bufferedReader = bufferedReader;
-        this.board = new String[9];
-        Arrays.fill(board, " ");
+        this.players = players;
+        this.board = board;
     }
 
     public void start() {
-        drawBoard();
-        movePlayer("Player 1: Enter a Number 1 to 9 Where You Want to Move", "X");
-        movePlayer("Player 2: Enter a Number 1 to 9 Where You Want to Move", "O");
-    }
-
-    private void drawBoard() {
-        String formattedBoard = "";
-        int counter = 1;
-        for (String cell : board) {
-            if(counter % 3 == 0){
-                formattedBoard += String.format("%-3s", cell);
-                formattedBoard += "\n-----------\n";
-            } else {
-                formattedBoard += String.format("%-3s|", cell);
-            }
-            counter++;
+        printStream.println(board.toString());
+        for (Player player : players) {
+            getPlayersMove(player);
         }
-        printStream.println(formattedBoard);
     }
 
-    private void movePlayer(String prompt, String playerPiece) {
-        printStream.println(prompt);
+    private void getPlayersMove(Player player) {
+        printStream.println(player.name + ": Please Enter A Number From 1 to 9 Where You Want to Move");
         String input = returnUserInput();
-        if(input.matches("^[1-9]")){
-            board[parseInt(input) - 1] = playerPiece;
-            drawBoard();
+        if(input.matches("^[1-9]") && !board.isCellTaken(input)) {
+            printStream.println(board.putPlayerOnTheBoard(player.piece, input));
+        } else {
+            printStream.println("Location Already Taken");
         }
-
     }
 
     private String returnUserInput() {

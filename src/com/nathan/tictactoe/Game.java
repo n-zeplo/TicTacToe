@@ -32,10 +32,16 @@ public class Game {
     private void getPlayersMove(Player player) {
         printStream.println(player.name + ": Please Enter A Number From 1 to 9 Where You Want to Move");
         String input = returnUserInput();
-        if(input.matches("^[1-9]") && !board.isCellTaken(input)) {
+        if(input.matches("^[1-9]")) {
+            movePlayer(player, input);
+        }
+    }
+
+    private void movePlayer(Player player, String input) {
+        if(!board.isCellTaken(input)) {
             printStream.println(board.putPlayerOnTheBoard(player.piece, input));
         } else {
-            printStream.println("Location Already Taken");
+            printStream.println("Location already taken");
         }
     }
 

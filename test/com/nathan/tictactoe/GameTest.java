@@ -42,7 +42,7 @@ public class GameTest {
 
         game.start();
 
-        verify(board).toString();
+        verify(printStream).println(contains(board.toString()));
     }
 
     @Test
@@ -62,68 +62,46 @@ public class GameTest {
     }
 
     @Test
-    public void shouldAddXToFirstSlotIfFirstPlayerEnters1() throws IOException {
+    public void shouldMovePlayerOneOnBoardWithValidInput() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1", "2");
 
         game.start();
 
-        verify(printStream).println(contains("X  |   |   \n-----------\n   |   |   \n-----------\n   |   |   "));
-
+        verify(board).putPlayerOnTheBoard("X", "1");
     }
-//
-//    @Test
-//    public void shouldAddXToFourthSlotIfFirstPlayerEnters4() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("4", "1");
-//
-//        game.start();
-//
-//        verify(printStream).println(contains("   |   |   \n-----------\nX  |   |   \n-----------\n   |   |   "));
-//
-//    }
-//
-//    @Test
-//     public void shouldDisplayPromptToPlayerTwo() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("1", "2");
-//        game.start();
-//
-//        verify(printStream).println(contains("Player 2"));
-//    }
-//
-//    @Test
-//    public void shouldDisplayPromptToPlayerTwoWithSameInstructionsAsPlayerOneOnMove() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("1", "2");
-//
-//        game.start();
-//
-//        verify(printStream, atLeast(2)).println(contains("1 to 9"));
-//    }
-//
-//    @Test
-//    public void shouldAddOToFirstSlotIfSecondPlayerEnters1() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("2", "1");
-//
-//        game.start();
-//
-//        verify(printStream).println(contains("O  |X   |   \n-----------\n   |   |   \n-----------\n   |   |   "));
-//
-//    }
-//
-//    @Test
-//    public void shouldAddOToFourthSlotIfSecondPlayerEnters4() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("1", "4");
-//
-//        game.start();
-//
-//        verify(printStream).println(contains("X   |   |   \n-----------\nO  |   |   \n-----------\n   |   |   "));
-//
-//    }
-//
-//    @Test
-//    public void shouldInformUserIfCellIsAlreadyTaken() throws IOException {
-//        when(bufferedReader.readLine()).thenReturn("1", "1", "2");
-//
-//        game.start();
-//
-//        verify(printStream).println(contains("Location already taken"));
-//    }
+
+    @Test
+    public void shouldCheckIfInputIsAlreadyTakenOnBoard() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1", "1", "2");
+
+        game.start();
+
+        verify(board, atLeast(1)).isCellTaken("1");
+    }
+
+    @Test
+     public void shouldDisplayPromptToPlayerTwo() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1", "2");
+        game.start();
+
+        verify(printStream).println(contains("Player 2"));
+    }
+
+    @Test
+    public void shouldDisplayPromptToPlayerTwoWithSameInstructionsAsPlayerOneOnMove() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1", "2");
+
+        game.start();
+
+        verify(printStream, atLeast(2)).println(contains("1 to 9"));
+    }
+
+    @Test
+    public void shouldInformUserIfCellIsAlreadyTaken() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(board.isCellTaken(anyString())).thenReturn(true);
+        game.start();
+
+        verify(printStream, atLeastOnce()).println(contains("Location already taken"));
+    }
 }

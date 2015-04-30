@@ -1,10 +1,15 @@
 package com.nathan.tictactoe;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class Main {
 
     public static void main(String[] args) {
-        String board = "   |   |   \n-----------\n   |   |   \n-----------\n   |   |   ";
 
-        new Game(System.out, board).start();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        Game game = new Game(System.out, bufferedReader);
+
+        game.start();
     }
 }

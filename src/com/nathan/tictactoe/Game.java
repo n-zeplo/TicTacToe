@@ -23,10 +23,17 @@ public class Game {
     }
 
     public void start() {
+        boolean done = false;
         printStream.println(board.toString());
-        while (!board.isFull()) {
+
+        while (!done) {
             for (Player player : players) {
-                getPlayersMove(player);
+                if (!board.isFull()){
+                    getPlayersMove(player);
+                } else {
+                    printStream.println("Game is a draw");
+                    done = true;
+                }
             }
         }
     }

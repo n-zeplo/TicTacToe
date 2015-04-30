@@ -104,4 +104,14 @@ public class GameTest {
 
         verify(printStream, atLeastOnce()).println(contains("Location already taken"));
     }
+
+    @Test
+    public void shouldTakeUserInputUntilBoardIsFullThenReturnDrawMessage() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1", "2");
+        when(board.isFull()).thenReturn(true);
+
+        game.start();
+
+        verify(printStream, atLeastOnce()).println(contains("Game is a draw"));
+    }
 }

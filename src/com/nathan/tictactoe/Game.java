@@ -16,5 +16,6 @@ public class Game {
 
     public void start() {
         printStream.println(board);
+        printStream.println("Player 1");
     }
 }

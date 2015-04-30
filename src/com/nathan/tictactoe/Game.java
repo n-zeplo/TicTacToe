@@ -24,8 +24,10 @@ public class Game {
 
     public void start() {
         printStream.println(board.toString());
-        for (Player player : players) {
-            getPlayersMove(player);
+        while (!board.isFull()) {
+            for (Player player : players) {
+                getPlayersMove(player);
+            }
         }
     }
 

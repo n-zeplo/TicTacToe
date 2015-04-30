@@ -3,6 +3,8 @@ package com.nathan.tictactoe;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
@@ -55,5 +57,19 @@ public class BoardTest {
         board.putPlayerOnTheBoard("O", "1");
 
         assertEquals(board.isCellTaken("1"), true);
+    }
+
+    @Test
+    public void shouldReturnFalseIfBoardIsFull() {
+        assertEquals(board.isFull(), false);
+    }
+
+    @Test
+    public void shouldReturnTrueIfBoardIsFull() {
+        String[] fullBoard = new String[9];
+        Arrays.fill(fullBoard, "1");
+        board.gameBoard = fullBoard;
+
+        assertEquals(board.isFull(), true);
     }
 }

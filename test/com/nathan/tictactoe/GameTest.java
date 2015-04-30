@@ -67,4 +67,14 @@ public class GameTest {
         verify(printStream).println(contains("X  |   |   \n-----------\n   |   |   \n-----------\n   |   |   "));
 
     }
+
+    @Test
+    public void shouldAddXToFourthSlotIfPlayerEnters4() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("4");
+
+        game.start();
+
+        verify(printStream).println(contains("   |   |   \n-----------\nX  |   |   \n-----------\n   |   |   "));
+
+    }
 }

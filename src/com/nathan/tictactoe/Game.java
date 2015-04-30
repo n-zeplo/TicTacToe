@@ -25,7 +25,8 @@ public class Game {
 
     public void start() {
         drawBoard();
-        movePlayer();
+        movePlayer("Player 1: Enter a Number 1 to 9 Where You Want to Move", "X");
+        movePlayer("Player 2: Enter a Number 1 to 9 Where You Want to Move", "O");
     }
 
     private void drawBoard() {
@@ -43,11 +44,11 @@ public class Game {
         printStream.println(formattedBoard);
     }
 
-    private void movePlayer() {
-        printStream.println("Player 1: Enter a Number 1 to 9 Where You Want to Move");
+    private void movePlayer(String prompt, String playerPiece) {
+        printStream.println(prompt);
         String input = returnUserInput();
         if(input.matches("^[1-9]")){
-            board[parseInt(input) - 1] = "X";
+            board[parseInt(input) - 1] = playerPiece;
             drawBoard();
         }
 

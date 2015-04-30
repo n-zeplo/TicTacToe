@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -55,11 +53,11 @@ public class GameTest {
         when(bufferedReader.readLine()).thenReturn("");
         game.start();
 
-        verify(printStream).println(contains("1 to 9"));
+        verify(printStream, atLeast(1)).println(contains("1 to 9"));
     }
 
     @Test
-    public void shouldAddXToFirstSlotIfPlayerEnters1() throws IOException {
+    public void shouldAddXToFirstSlotIfFirstPlayerEnters1() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1");
 
         game.start();
@@ -69,12 +67,49 @@ public class GameTest {
     }
 
     @Test
-    public void shouldAddXToFourthSlotIfPlayerEnters4() throws IOException {
+    public void shouldAddXToFourthSlotIfFirstPlayerEnters4() throws IOException {
         when(bufferedReader.readLine()).thenReturn("4");
 
         game.start();
 
         verify(printStream).println(contains("   |   |   \n-----------\nX  |   |   \n-----------\n   |   |   "));
+
+    }
+
+    @Test
+     public void shouldDisplayPromptToPlayerTwo() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("");
+        game.start();
+
+        verify(printStream).println(contains("Player 2"));
+    }
+
+    @Test
+    public void shouldDisplayPromptToPlayerTwoWithSameInstructionsAsPlayerOneOnMove() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("");
+
+        game.start();
+
+        verify(printStream, atLeast(2)).println(contains("1 to 9"));
+    }
+
+    @Test
+    public void shouldAddOToFirstSlotIfSecondPlayerEnters1() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("", "1");
+
+        game.start();
+
+        verify(printStream).println(contains("O  |   |   \n-----------\n   |   |   \n-----------\n   |   |   "));
+
+    }
+
+    @Test
+    public void shouldAddOToFourthSlotIfSecondPlayerEnters4() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("", "4");
+
+        game.start();
+
+        verify(printStream).println(contains("   |   |   \n-----------\nO  |   |   \n-----------\n   |   |   "));
 
     }
 }

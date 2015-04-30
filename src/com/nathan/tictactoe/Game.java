@@ -28,8 +28,11 @@ public class Game {
 
         while (!done) {
             for (Player player : players) {
-                if (!board.isFull()){
+                if(!board.isFull()){
                     getPlayersMove(player);
+//                    if(board.checkWinningCombinations()){
+//                        printStream.println(player.name + " Wins!");
+//                    }
                 } else {
                     printStream.println("Game is a draw");
                     done = true;

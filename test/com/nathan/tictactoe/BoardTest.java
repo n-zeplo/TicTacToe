@@ -74,26 +74,6 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldReturnTrueIfWinnerExistsInGivenCells() {
-        int[] positions = new int[] {0,1,2};
-        String[] winningBoard = new String[] {"X", "X", "X", "","","","","",""};
-
-        board.gameBoard = winningBoard;
-
-        assertEquals(true, board.winnerExists(positions));
-    }
-
-    @Test
-    public void shouldReturnFalseIfNOWinnerExistsInGivenCells() {
-        int[] positions = new int[] {0,1,2};
-        String[] winningBoard = new String[] {" ", "X", " ", " "," "," "," "," "," "};
-
-        board.gameBoard = winningBoard;
-
-        assertEquals(false, board.winnerExists(positions));
-    }
-
-    @Test
     public void shouldReturnTrueIfWinnerExistsInWinningCombinations() {
         String[] winningBoard = new String[] {"X", "O", "X", "","X","","","","X"};
 

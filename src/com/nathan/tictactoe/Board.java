@@ -32,7 +32,7 @@ public class Board {
         boolean isWinner = false;
 
         for (int[] ints : WINNING_COMBINATIONS) {
-            if(winnerExists(ints)){
+            if(winnerExistsInCombination(ints)){
                 isWinner = true;
             }
         }
@@ -40,7 +40,7 @@ public class Board {
         return isWinner;
     }
 
-    public boolean winnerExists(int[] positions) {
+    private boolean winnerExistsInCombination(int[] positions) {
         if (!gameBoard[positions[0]].equals(" ") && gameBoard[positions[0]].equals(gameBoard[positions[1]]) && gameBoard[positions[1]].equals(gameBoard[positions[2]])) {
             return true;
         } else {

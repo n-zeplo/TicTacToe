@@ -28,19 +28,19 @@ public class GameTest {
         printStream = mock(PrintStream.class);
         bufferedReader = mock(BufferedReader.class);
         players = new Player[2];
-        players[0] = new Player("Player 1", "X");
-        players[1] = new Player("Player 2", "O");
+        //This Feels Bad
+        players[0] = new Player("Player 1", "X", bufferedReader);
+        players[1] = new Player("Player 2", "O", bufferedReader);
 
 
-        game = new Game(printStream, bufferedReader, players, board);
+        game = new Game(printStream, players, board);
     }
 
 
     @Test
-    public void shouldStartingGameDrawsTheBoard() throws IOException {
+    public void shouldDrawTheBoardOnStart() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(true);
 
         game.start();
 
@@ -48,11 +48,9 @@ public class GameTest {
     }
 
     @Test
-    public void shouldDisplayPromptToPlayerOneToMove() throws IOException {
+    public void shouldDisplayPromptToPlayerOneToMoveOnStart() throws IOException {
         when(bufferedReader.readLine()).thenReturn("");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
-
+        when(board.isFull()).thenReturn(true);
         game.start();
 
         verify(printStream, atLeastOnce()).println(contains("Player 1"));
@@ -61,8 +59,7 @@ public class GameTest {
     @Test
     public void shouldDisplayPromptToPlayerOneWithInstructions() throws IOException {
         when(bufferedReader.readLine()).thenReturn("");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(true);
 
         game.start();
 
@@ -70,32 +67,19 @@ public class GameTest {
     }
 
     @Test
-    public void shouldMovePlayerOneOnBoardWithValidInput() throws IOException {
+    public void shouldMovePlayerOneToBoardPositionWithValidInput() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(true);
 
         game.start();
 
-        verify(board).putPlayerOnTheBoard("X", "1");
-    }
-
-    @Test
-    public void shouldCheckIfInputIsAlreadyTakenOnBoard() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
-
-        game.start();
-
-        verify(board, atLeast(1)).isCellTaken("1");
+        verify(board).putPlayerInPosition("X", "1");
     }
 
     @Test
      public void shouldDisplayPromptToPlayerTwo() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1", "2");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(false, true);
 
         game.start();
 
@@ -105,8 +89,7 @@ public class GameTest {
     @Test
     public void shouldDisplayPromptToPlayerTwoWithSameInstructionsAsPlayerOneOnMove() throws IOException {
         when(bufferedReader.readLine()).thenReturn("");
-        when(board.isFull()).thenReturn(false);
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(false, true);
 
         game.start();
 
@@ -114,9 +97,19 @@ public class GameTest {
     }
 
     @Test
+    public void shouldCheckBoardIfInputIsTakenCell() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.isFull()).thenReturn(false, true);
+
+        game.start();
+
+        verify(board, atLeast(1)).isCellTaken("1");
+    }
+
+    @Test
     public void shouldInformUserIfCellIsAlreadyTaken() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1", "2");
-        when(board.checkWinningCombinations()).thenReturn(true);
+        when(board.isFull()).thenReturn(false, true);
         when(board.isCellTaken(anyString())).thenReturn(true, false);
 
         game.start();
@@ -126,22 +119,33 @@ public class GameTest {
 
     @Test
     public void shouldAllowUserToReChooseIfSelectionIsTaken() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("");
-        when(board.checkWinningCombinations()).thenReturn(true);
-        when(board.isCellTaken(anyString())).thenReturn(true, false);
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.isFull()).thenReturn(false, true);
+        when(board.isCellTaken(anyString())).thenReturn(true, true, false);
 
         game.start();
 
-        verify(printStream, atLeast(2)).println(contains("Player 2"));
+        verify(printStream, atLeast(2)).println(contains("Player 1"));
     }
 
     @Test
-    public void shouldTakeUserInputUntilBoardIsFullThenReturnDrawMessage() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1", "2","3","4","5","6","7","8","9");
+    public void shouldReturnDrawMessageIfBoardIsFull() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1");
         when(board.isFull()).thenReturn(true);
 
         game.start();
 
         verify(printStream, atLeastOnce()).println(contains("Game is a draw"));
+    }
+
+    @Test
+    public void shouldReturnWinningMessageWhenPlayerWins() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1");
+        when(board.checkWinningCombinations()).thenReturn(true);
+
+        game.start();
+
+        verify(printStream, atLeastOnce()).println(contains("Wins"));
+
     }
 }

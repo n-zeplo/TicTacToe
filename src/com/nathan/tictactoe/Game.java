@@ -10,16 +10,16 @@ import static java.lang.Integer.parseInt;
  * Created by nzeplowi on 4/30/15.
  */
 public class Game {
+    private boolean running;
     private PrintStream printStream;
-    private BufferedReader bufferedReader;
     private Player[] players;
     private Board board;
 
-    public Game(PrintStream printStream, BufferedReader bufferedReader, Player[] players, Board board) {
+    public Game(PrintStream printStream, Player[] players, Board board) {
         this.printStream = printStream;
-        this.bufferedReader = bufferedReader;
         this.players = players;
         this.board = board;
+        this.running = true;
     }
 
     public void start() {
@@ -28,29 +28,36 @@ public class Game {
     }
 
     private void gameLoop() {
-        //TODO: NEEDS MAJOR REFACTORING
-        boolean done = false;
-        while (!done) {
+        int whichPlayersTurn = 0;
+        while (running) {
+            playersMove(players[whichPlayersTurn]);
+            checkIfGameHasEnded(players[whichPlayersTurn]);
 
-            for (Player player : players) {
-                if(board.isFull()) {
-                    printStream.println("Game is a draw");
-                    done = true;
-                }else {
-                    movePlayer(player);
-                    //TODO: Break Loop if Check Winner is True
-                    if(board.checkWinningCombinations()){
-                        done = true;
-                        printStream.println(player.name + " Wins!");
-                    }
-                }
+            whichPlayersTurn++;
+            if (whichPlayersTurn == players.length){
+                whichPlayersTurn = 0;
             }
         }
     }
 
-    private void movePlayer(Player player) {
+    private void checkIfGameHasEnded(Player player) {
+        //Want to Extract into board.hasReachedEndState()
+        if(board.isFull()) {
+            printStream.println("Game is a draw");
+            stopGame();
+        }else if(board.checkWinningCombinations()){
+            printStream.println(player.name + " Wins!");
+            stopGame();
+        }
+    }
+
+    private void stopGame() {
+        running = false;
+    }
+
+    private void playersMove(Player player) {
         printStream.println(player.name + ": Please Enter A Number From 1 to 9 Where You Want to Move");
-        String input = returnUserInput();
+        String input = player.returnUserInput();
         if(checkIfUserInputIsValid(input)){
             sendMoveToBoard(player, input);
         };
@@ -62,20 +69,11 @@ public class Game {
 
     private void sendMoveToBoard(Player player, String input) {
         if(!board.isCellTaken(input)) {
-            printStream.println(board.putPlayerOnTheBoard(player.piece, input));
+            printStream.println(board.putPlayerInPosition(player.piece, input));
         } else {
             printStream.println("Location already taken");
-            movePlayer(player);
+            playersMove(player);
         }
     }
 
-    private String returnUserInput() {
-        String input = "";
-        try {
-           input = bufferedReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return input;
-    }
 }

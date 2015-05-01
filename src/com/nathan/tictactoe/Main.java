@@ -14,14 +14,14 @@ public class Main {
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         initializePlayers();
         board = new Board(new String[] {" ", " ", " ", " ", " ", " ", " ", " ", " "});
-        Game game = new Game(System.out, bufferedReader, players, board);
+        Game game = new Game(System.out, players, board);
 
         game.start();
     }
 
     private static void initializePlayers() {
         players = new Player[2];
-        players[0] = new Player("Player 1", "X");
-        players[1] = new Player("Player 2", "O");
+        players[0] = new Player("Player 1", "X", bufferedReader);
+        players[1] = new Player("Player 2", "O", bufferedReader);
     }
 }

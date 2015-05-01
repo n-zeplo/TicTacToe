@@ -28,16 +28,17 @@ public class Game {
     }
 
     private void gameLoop() {
-        //NEEDS MAJOR REFACTORING
+        //TODO: NEEDS MAJOR REFACTORING
         boolean done = false;
         while (!done) {
+
             for (Player player : players) {
                 if(board.isFull()) {
                     printStream.println("Game is a draw");
                     done = true;
                 }else {
                     movePlayer(player);
-
+                    //TODO: Break Loop if Check Winner is True
                     if(board.checkWinningCombinations()){
                         done = true;
                         printStream.println(player.name + " Wins!");

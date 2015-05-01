@@ -35,7 +35,7 @@ public class BoardTest {
     public void shouldAddXToSlotOneWithInputOne() {
         board = new Board(blankBoard);
 
-        board.putPlayerOnTheBoard("X", "1");
+        board.putPlayerInPosition("X", "1");
 
         assertEquals(board.toString(),  " X |   |   \n-----------\n   |   |   \n-----------\n   |   |   ");
     }
@@ -44,7 +44,7 @@ public class BoardTest {
     public void shouldAddXToSlotFourWithInputFour() {
         board = new Board(blankBoard);
 
-        board.putPlayerOnTheBoard("X", "4");
+        board.putPlayerInPosition("X", "4");
 
         assertEquals(board.toString(),  "   |   |   \n-----------\n X |   |   \n-----------\n   |   |   ");
     }
@@ -53,7 +53,7 @@ public class BoardTest {
     public void shouldAddOToSlotOneWithInputOne() {
         board = new Board(blankBoard);
 
-        board.putPlayerOnTheBoard("O", "1");
+        board.putPlayerInPosition("O", "1");
 
         assertEquals(board.toString(),  " O |   |   \n-----------\n   |   |   \n-----------\n   |   |   ");
     }
@@ -68,7 +68,7 @@ public class BoardTest {
     @Test
     public void shouldReturnTrueIfSlotIsFilled() {
         board = new Board(blankBoard);
-        board.putPlayerOnTheBoard("O", "1");
+        board.putPlayerInPosition("O", "1");
 
         assertEquals(board.isCellTaken("1"), true);
     }

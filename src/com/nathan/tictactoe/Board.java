@@ -16,11 +16,14 @@ public class Board {
     }
 
     public boolean isCellTaken(String input){
-        return !gameBoard[parseInt(input) - 1].equals(" ");
+        int position = parseInt(input);
+        return !gameBoard[position - 1].equals(" ");
     }
-    public String putPlayerOnTheBoard(String playerPiece, String input) {
-            gameBoard[parseInt(input) - 1] = playerPiece;
-            return toString();
+
+    public String putPlayerInPosition(String playerPiece, String input) {
+        int position = parseInt(input);
+        gameBoard[position - 1] = playerPiece;
+        return toString();
     }
 
     public boolean isFull() {
